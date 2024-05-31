@@ -1,0 +1,32 @@
+#	Projeto
+PROJ = l6e1
+
+#	.cpp
+C_SOURCE = $(wildcard *.cpp)
+
+#	.hpp
+H_SOURCE = $(wildcard *.hpp)
+
+#	.o
+OBJ = $(C_SOURCE:.cpp = .o)
+
+#	Compilador
+CC = g++
+
+#	Flags
+CC_FLAGS = -fstack-protector-all	\
+		   -g						\
+		   -fstack-check			
+
+#	Compilação e linkagem
+$(PROJ): $(OBJ)
+	$(CC) -o $@ $^
+	
+%.o: %.cpp %.hpp
+	$(CC) -o $@ $< $(CC_FLAGS)
+	
+main.o: main.cpp $(H_SOURCE)
+	$(CC) -o $@ $< $(CC_FLAGS)
+
+clean:
+	rm -rf *.o $(PROJ) *~
